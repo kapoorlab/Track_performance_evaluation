@@ -45,8 +45,12 @@ public class OneToOneMatcher {
 	{
 		// build the potential track pairs
 		this.feasiblePairs.clear();
-		for (TrackSegment ts:refTracks)
+		for (TrackSegment ts:refTracks) {
+			
+			
 			this.feasiblePairs.add(getFeasiblePairs(ts, candidateTracks, distType, maxDist));
+			
+		}
 		// cluster track pairs
 		ArrayList<TrackPairsCluster> clusters = new ArrayList<OneToOneMatcher.TrackPairsCluster>();
 		try{clusters.addAll(getTrackPairClusters());}
@@ -60,13 +64,13 @@ public class OneToOneMatcher {
 			cluster.buildCostMatrix();
 			// use Munkres algorithm to find the best pairing
 			HungarianMatching matcher = new HungarianMatching(cluster.costs);
-			try{
+			System.out.println(matcher.numColumns + " " + matcher.numRows);
+			
+			if(matcher.numColumns >= matcher.numRows) {
 				boolean[][] matching = matcher.optimize();
+				
+				System.out.println(cluster);
 				assignment.addAll(cluster.getAssignements(matching));
-			}
-			catch(Exception e)
-			{
-				throw e;
 			}
 		}
 		return assignment;
@@ -86,8 +90,10 @@ public class OneToOneMatcher {
 				TrackPairsCluster currentCluster = new TrackPairsCluster();
 				TrackSegment refTrack = trackPairsList.get(0).referenceTrack;
 				currentCluster.usedReferenceTracks.add(refTrack);
-				for (TrackPair tp:trackPairsList)
+				for (TrackPair tp:trackPairsList) {
 					currentCluster.usedCandidateTracks.add(tp.candidateTrack);
+				   
+				}
 				currentCluster.trackPairs.addAll(trackPairsList);
 				// now try to merge this cluster with others
 				ArrayList<TrackPairsCluster> clustersCopy = new ArrayList<TrackPairsCluster>();
@@ -121,6 +127,7 @@ public class OneToOneMatcher {
 				throw new Exception("There is a track cluster empty");
 			}
 		}
+		
 		return clusters;
 	}
 
@@ -175,13 +182,10 @@ public class OneToOneMatcher {
 			{
 				TrackPair pair = new TrackPair(ts, ts2, distance.distance, distance.firstMatchingTime, distance.lastMatchingTime);
 				feasiblePairs.add(pair);
+				
 			}
 		}
-		// add a dummy track for representing no association
-		TrackSegment dummyTrack = new TrackSegment();
-		TrackToTrackDistance distance = new TrackToTrackDistance(ts, dummyTrack, distType, maxDist);
-		TrackPair pair = new TrackPair(ts, new TrackSegment(), distance.distance, distance.firstMatchingTime, distance.lastMatchingTime);
-		feasiblePairs.add(pair);
+		
 		return feasiblePairs;
 	}
 

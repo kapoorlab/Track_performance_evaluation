@@ -37,7 +37,6 @@ public class TrackingPerformancePanel extends JPanel
 	ArrayList<TrackSegment> recoveredTracks = new ArrayList<TrackSegment>();
 	ArrayList<TrackSegment> correctTracks = new ArrayList<TrackSegment>();
 	ArrayList<TrackSegment> missedTracks = new ArrayList<TrackSegment>();
-	ArrayList<TrackSegment> spuriousTracks = new ArrayList<TrackSegment>();
 
 	ArrayList<TrackSegment> referenceTracks = new ArrayList<TrackSegment>();
 	ArrayList<TrackSegment> candidateTracks = new ArrayList<TrackSegment>();
@@ -283,6 +282,8 @@ public class TrackingPerformancePanel extends JPanel
 						ArrayList<TrackPair> pairs = new ArrayList<TrackPair>();
 						try {
 							pairs.addAll(matcher.pairTracks(maxDist, distType));
+							
+							System.out.println(pairs.size());
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
@@ -290,7 +291,6 @@ public class TrackingPerformancePanel extends JPanel
 						recoveredTracks.clear();
 						correctTracks.clear();
 						missedTracks.clear();
-						spuriousTracks.clear();
 						for (TrackPair tp:pairs)
 						{
 							if (tp.candidateTrack.getDetectionList().isEmpty())
@@ -304,11 +304,7 @@ public class TrackingPerformancePanel extends JPanel
 								correctTracks.add(tp.candidateTrack);
 							}
 						}
-						for (TrackSegment ts:candidateTracks)
-						{
-							if (!correctTracks.contains(ts))
-								spuriousTracks.add(ts);
-						}
+					
 						trackPairs.addAll(pairs);
 						final PerformanceAnalyzer analyzer = new PerformanceAnalyzer(referenceTracks, candidateTracks, trackPairs);
 						SwingUtilities.invokeLater(new Runnable() {
@@ -567,7 +563,7 @@ public class TrackingPerformancePanel extends JPanel
 			this.numMissedDetections = numMissedDetections;
 			this.numWrongDetections = numWrongDetections;
 			this.detectionsSimilarity = (double)numRecoveredDetections/((double)numRecoveredDetections + (double)numMissedDetections + (double)numWrongDetections);
-			this.tracksSimilarity = (double)numCorrectTracks/((double)numCorrectTracks + (double) numMissedTracks + (double) numSpuriousTracks);
+			this.tracksSimilarity = (double)numCorrectTracks/((double)numCorrectTracks + (double) numMissedTracks );
 			SwingUtilities.invokeLater(
 					new Runnable() {
 
@@ -624,7 +620,6 @@ public class TrackingPerformancePanel extends JPanel
 			tracksSimilarityLabel.setText(": "+tracksSimilarity);
 			correctTracksLabel.setText(": "+numCorrectTracks+" (out of "+numRefTracks+")");
 			missedTracksLabel.setText(": "+numMissedTracks+" (out of "+numRefTracks+")");
-			spuriousTracksLabel.setText(": "+numSpuriousTracks);
 			//spuriousTracksLabel.setText(": "+numSpuriousTracks+" (out of "+numCandidateTracks+")");
 			numRecoveredDetectionsLabel.setText(": "+numRecoveredDetections+" (out of "+numRefDetections+")");
 			numMissedDetectionsLabel.setText(": "+numMissedDetections+" (out of "+numRefDetections+")");
@@ -654,7 +649,6 @@ public class TrackingPerformancePanel extends JPanel
 				//out.println(numCorrectTracks+"\t : number of paired tracks");
 				out.println(numCorrectTracks+"\t : number of paired tracks (out of "+numRefTracks+")");
 				out.println(numMissedTracks+"\t : number of missed tracks (out of "+numRefTracks+")");
-				out.println(numSpuriousTracks+"\t : number of spurious tracks)");
 				//out.println(numSpuriousTracks+"\t : number of spurious tracks (out of "+numCandidateTracks+")");
 				out.println(numRefDetections+"\t : number of reference detections");
 				out.println(numCandidateDetections+"\t : number of candidate detections");
@@ -662,7 +656,6 @@ public class TrackingPerformancePanel extends JPanel
 				//out.println(numRecoveredDetections+"\t : number of paired detections");
 				out.println(numRecoveredDetections+"\t : number of paired detections (out of "+numRefDetections+")");
 				out.println(numMissedDetections+"\t : number of missed detections (out of "+numRefDetections+")");
-				out.println(numWrongDetections+"\t : number of spurious detections");
 				//out.println(numWrongDetections+"\t : number of spurious detections (out of "+numCandidateDetections+")");
 				out.close();
 			} catch (IOException e){
