@@ -446,7 +446,7 @@ public class TrackingPerformancePanel extends JPanel
 			c.gridx = 0;
 			c.gridy++;
 			c.weightx = 0.25;
-			this.add(new JLabel("Similarity between tracks (Jaccard)"), c);
+			this.add(new JLabel("Similarity between tracks (True Positive)"), c);
 
 			c.gridx = 1;
 			c.weightx = 0.75;
@@ -494,7 +494,7 @@ public class TrackingPerformancePanel extends JPanel
 			c.gridx = 0;
 			c.gridy++;
 			c.weightx = 0.25;
-			this.add(new JLabel("Similarity between detections (Jaccard)"), c);
+			this.add(new JLabel("Similarity between detections (True Positive)"), c);
 
 			c.gridx = 1;
 			c.weightx = 0.75;
@@ -561,8 +561,8 @@ public class TrackingPerformancePanel extends JPanel
 			this.numCorrectTracks = numCorrect;
 			this.numRecoveredDetections = numRecoveredDetections;
 			this.numMissedDetections = numMissedDetections;
-			this.numWrongDetections = numWrongDetections;
-			this.detectionsSimilarity = (double)numRecoveredDetections/((double)numRecoveredDetections + (double)numMissedDetections + (double)numWrongDetections);
+			this.numWrongDetections = 0;
+			this.detectionsSimilarity = (double)numRecoveredDetections/((double)numRecoveredDetections + (double)numMissedDetections );
 			this.tracksSimilarity = (double)numCorrectTracks/((double)numCorrectTracks + (double) numMissedTracks );
 			SwingUtilities.invokeLater(
 					new Runnable() {
@@ -645,14 +645,14 @@ public class TrackingPerformancePanel extends JPanel
 				out.println(pairsFullDistance+"\t : full normalized score (beta)");
 				out.println(numRefTracks+"\t : number of reference tracks");
 				out.println(numCandidateTracks+"\t : number of candidate tracks");
-				out.println(tracksSimilarity+"\t : Similarity between tracks (Jaccard)");
+				out.println(tracksSimilarity+"\t : Similarity between tracks (True Positives)");
 				//out.println(numCorrectTracks+"\t : number of paired tracks");
 				out.println(numCorrectTracks+"\t : number of paired tracks (out of "+numRefTracks+")");
 				out.println(numMissedTracks+"\t : number of missed tracks (out of "+numRefTracks+")");
 				//out.println(numSpuriousTracks+"\t : number of spurious tracks (out of "+numCandidateTracks+")");
 				out.println(numRefDetections+"\t : number of reference detections");
 				out.println(numCandidateDetections+"\t : number of candidate detections");
-				out.println(detectionsSimilarity+"\t : Similarity between detections (Jaccard)");
+				out.println(detectionsSimilarity+"\t : Similarity between detections (True Positive)");
 				//out.println(numRecoveredDetections+"\t : number of paired detections");
 				out.println(numRecoveredDetections+"\t : number of paired detections (out of "+numRefDetections+")");
 				out.println(numMissedDetections+"\t : number of missed detections (out of "+numRefDetections+")");

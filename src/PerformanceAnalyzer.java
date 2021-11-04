@@ -81,6 +81,8 @@ public class PerformanceAnalyzer
 		{
 			TrackToTrackDistance d = new TrackToTrackDistance(tp.referenceTrack, tp.candidateTrack, distType, maxDist);
 			distance += d.distance;
+			
+			System.out.println("dist" + distance);
 		}
 		return distance;
 	}

@@ -94,7 +94,6 @@ public class TrackExportAndImportUtilities {
 										lastZ + (double)(t-lastT)*(nextZ-lastZ)*gapT,
 										t
 										);
-								System.out.println(interpolatedDetection.getX()+" "+interpolatedDetection.getY()+" "+interpolatedDetection.getZ());
 								interpolatedDetection.setDetectionType(Detection.DetectionTypes.VIRTUAL);
 								track.addDetection(interpolatedDetection);
 							}

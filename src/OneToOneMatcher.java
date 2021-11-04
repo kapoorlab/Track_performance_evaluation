@@ -64,12 +64,10 @@ public class OneToOneMatcher {
 			cluster.buildCostMatrix();
 			// use Munkres algorithm to find the best pairing
 			HungarianMatching matcher = new HungarianMatching(cluster.costs);
-			System.out.println(matcher.numColumns + " " + matcher.numRows);
 			
 			if(matcher.numColumns >= matcher.numRows) {
 				boolean[][] matching = matcher.optimize();
 				
-				System.out.println(cluster);
 				assignment.addAll(cluster.getAssignements(matching));
 			}
 		}
