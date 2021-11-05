@@ -179,6 +179,11 @@ public class OneToOneMatcher {
 			if (distance.isMatching)
 			{
 				TrackPair pair = new TrackPair(ts, ts2, distance.distance, distance.firstMatchingTime, distance.lastMatchingTime);
+				
+				System.out.println("Reference Track Start" + ts.getFirstDetection().getX() + " " + ts.getFirstDetection().getY() + " " + ts.getFirstDetection().getZ() + "Distance, first, last" + distance.distance + " "
+						 + " " + distance.firstMatchingTime + " " +  distance.lastMatchingTime );
+				System.out.println("Paired Track Start" + ts2.getFirstDetection().getX() + " " + ts2.getFirstDetection().getY() + " " + ts2.getFirstDetection().getZ() );
+				
 				feasiblePairs.add(pair);
 				
 			}

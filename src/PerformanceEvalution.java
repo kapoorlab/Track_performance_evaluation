@@ -45,7 +45,6 @@ public class PerformanceEvalution
 				boolean successInit = evaluator.init(args);
 				if (!successInit)
 				{
-					System.out.println(evaluator.getInitLog());
 					displayHelp();
 					return;
 				}

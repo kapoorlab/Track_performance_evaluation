@@ -82,7 +82,8 @@ public class PerformanceAnalyzer
 			TrackToTrackDistance d = new TrackToTrackDistance(tp.referenceTrack, tp.candidateTrack, distType, maxDist);
 			distance += d.distance;
 			
-			System.out.println("dist" + distance);
+			System.out.println("dist in pair" + distance + " " + tp.candidateTrack.getFirstDetection().getX() + " " + tp.candidateTrack.getFirstDetection().getY()
+					+ " " + tp.candidateTrack.getFirstDetection().getZ());
 		}
 		return distance;
 	}
@@ -230,6 +231,10 @@ public class PerformanceAnalyzer
 		{
 			TrackToTrackDistance d = new TrackToTrackDistance(tp.referenceTrack, tp.candidateTrack, DistanceTypes.DISTANCE_MATCHING, maxDist);
 			numRecoveredDetections += d.numMatchingDetections;
+			
+
+			System.out.println("Paired Distance" + numRecoveredDetections +  " " + tp.candidateTrack.getFirstDetection().getX() + " " + tp.candidateTrack.getFirstDetection().getY()
+					+ " " + tp.candidateTrack.getFirstDetection().getZ());
 		}
 		return numRecoveredDetections;
 	}
@@ -243,6 +248,9 @@ public class PerformanceAnalyzer
 		{
 			TrackToTrackDistance d = new TrackToTrackDistance(tp.referenceTrack, tp.candidateTrack, DistanceTypes.DISTANCE_MATCHING, maxDist);
 			numMissedDetections += d.numNonMatchedDetections;
+			
+			System.out.println("Missed Detections" + numMissedDetections + " " + tp.candidateTrack.getFirstDetection().getX() + " " + tp.candidateTrack.getFirstDetection().getY()
+					+ " " + tp.candidateTrack.getFirstDetection().getZ());
 		}
 		return numMissedDetections;
 	}
