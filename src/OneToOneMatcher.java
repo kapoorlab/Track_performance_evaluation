@@ -48,6 +48,7 @@ public class OneToOneMatcher {
 		for (TrackSegment ts:refTracks) {
 			
 			
+			
 			this.feasiblePairs.add(getFeasiblePairs(ts, candidateTracks, distType, maxDist));
 			
 		}
@@ -171,7 +172,7 @@ public class OneToOneMatcher {
 	 * @param maxDist the gate (maximum Euclidian distance) for distance computation
 	 * 
 	 * */
-	private ArrayList<TrackPair> getFeasiblePairs(TrackSegment ts, ArrayList<TrackSegment> tracks2, DistanceTypes distType, double maxDist) {
+	public ArrayList<TrackPair> getFeasiblePairs(TrackSegment ts, ArrayList<TrackSegment> tracks2, DistanceTypes distType, double maxDist) {
 		ArrayList<TrackPair> feasiblePairs = new ArrayList<TrackPair>();
 		for (TrackSegment ts2:tracks2)
 		{

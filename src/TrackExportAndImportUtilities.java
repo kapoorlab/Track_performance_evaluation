@@ -105,7 +105,6 @@ public class TrackExportAndImportUtilities {
 				trackArrayList.add( track );
 			}
 		}
-		System.out.println( trackArrayList.size() +" track(s) succesfuly loaded.");
 		return trackArrayList;
 	}
 

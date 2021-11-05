@@ -25,6 +25,9 @@ public class PerformanceEvalution
 {
 	public static void main(String [ ] args)
 	{	
+		
+		
+		System.out.println("Starting");
 		if (args.length==0)
 		{
 			//launch the GUI
