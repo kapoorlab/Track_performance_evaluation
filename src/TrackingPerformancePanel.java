@@ -295,13 +295,18 @@ public class TrackingPerformancePanel extends JPanel
 						recoveredTracks.clear();
 						correctTracks.clear();
 						missedTracks.clear();
-						ArrayList<double[]> Matchedpairs = new ArrayList<double[]>();
+						
 						for (TrackPair tp:pairs)
 						{
+							ArrayList<double[]> Matchedpairs = new ArrayList<double[]>();
 							
-							Matchedpairs.add(new double [] {tp.referenceTrack.getFirstDetection().getX(), tp.referenceTrack.getFirstDetection().getY() 
-									, tp.referenceTrack.getFirstDetection().getZ(),tp.candidateTrack.getFirstDetection().getX(), tp.candidateTrack.getFirstDetection().getY() 
-									, tp.candidateTrack.getFirstDetection().getZ() });
+							
+							ArrayList<Detection> detlist = tp.referenceTrack.getDetectionList();
+							int size = Math.min(tp.referenceTrack.getDetectionList().size(), tp.candidateTrack.getDetectionList().size());
+							for(int i = 0; i < size; ++i)
+							Matchedpairs.add(new double [] {tp.referenceTrack.getDetectionList().get(i).getX(), tp.referenceTrack.getDetectionList().get(i).getY() 
+									, tp.referenceTrack.getDetectionList().get(i).getZ(),tp.candidateTrack.getDetectionList().get(i).getX(), tp.candidateTrack.getDetectionList().get(i).getY() 
+									, tp.candidateTrack.getDetectionList().get(i).getZ() });
 							
 							
 							
@@ -654,7 +659,7 @@ public class TrackingPerformancePanel extends JPanel
 				FileWriter outFile = new FileWriter(file);
 				PrintWriter out = new PrintWriter(outFile);
 
-				out.println("Index" + " " + "Ref X" +" " + "Ref Y" +" " + "Ref Z" +" " + "Candidate X" +" " + "Candidate Y" +" " + "Candidate Z");
+				out.println("Index" + " " + "RefX" +" " + "RefY" +" " + "RefZ" +" " + "CandidateX" +" " + "CandidateY" +" " + "End" + " " +  "CandidateZ");
 				
 				
 				
@@ -664,7 +669,7 @@ public class TrackingPerformancePanel extends JPanel
 					for(double[] pair : pairlist) {
 						
 						out.println(entry.getKey() + " " +  pair[0] + " " + pair[1]+  " " + pair[2] + 
-								" " + pair[3] + " " +pair[4] +  " " + " " + pair[5]);
+								" " + pair[3] + " " +pair[4] +  " " + " " + pair[5] +  " " + pair[5] );
 					}
 					
 					
