@@ -9,6 +9,8 @@ import java.io.PrintWriter;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -40,6 +42,8 @@ public class TrackingPerformancePanel extends JPanel
 
 	ArrayList<TrackSegment> referenceTracks = new ArrayList<TrackSegment>();
 	ArrayList<TrackSegment> candidateTracks = new ArrayList<TrackSegment>();
+	
+	HashMap<Integer, ArrayList<double[]>> resultPairs = new HashMap<Integer, ArrayList<double[]>>();
 
 	JButton selectReferenceGroupsButton;
 	JButton selectCandidateGroupsButton;
@@ -291,8 +295,16 @@ public class TrackingPerformancePanel extends JPanel
 						recoveredTracks.clear();
 						correctTracks.clear();
 						missedTracks.clear();
+						ArrayList<double[]> Matchedpairs = new ArrayList<double[]>();
 						for (TrackPair tp:pairs)
 						{
+							
+							Matchedpairs.add(new double [] {tp.referenceTrack.getFirstDetection().getX(), tp.referenceTrack.getFirstDetection().getY() 
+									, tp.referenceTrack.getFirstDetection().getZ(),tp.candidateTrack.getFirstDetection().getX(), tp.candidateTrack.getFirstDetection().getY() 
+									, tp.candidateTrack.getFirstDetection().getZ() });
+							
+							
+							
 							if (tp.candidateTrack.getDetectionList().isEmpty())
 							{
 								tp.candidateTrack = null;
@@ -303,8 +315,10 @@ public class TrackingPerformancePanel extends JPanel
 								recoveredTracks.add(tp.referenceTrack);
 								correctTracks.add(tp.candidateTrack);
 							}
+							resultPairs.put(tp.candidateIndex, Matchedpairs);
 						}
-					
+						
+						
 						trackPairs.addAll(pairs);
 						final PerformanceAnalyzer analyzer = new PerformanceAnalyzer(referenceTracks, candidateTracks, trackPairs);
 						SwingUtilities.invokeLater(new Runnable() {
@@ -640,23 +654,21 @@ public class TrackingPerformancePanel extends JPanel
 				FileWriter outFile = new FileWriter(file);
 				PrintWriter out = new PrintWriter(outFile);
 
-				out.println(pairsDistance+"\t : pairing distance");
-				out.println(pairsNormalizedDistance+"\t : normalized pairing score (alpha)");
-				out.println(pairsFullDistance+"\t : full normalized score (beta)");
-				out.println(numRefTracks+"\t : number of reference tracks");
-				out.println(numCandidateTracks+"\t : number of candidate tracks");
-				out.println(tracksSimilarity+"\t : Similarity between tracks (True Positives)");
-				//out.println(numCorrectTracks+"\t : number of paired tracks");
-				out.println(numCorrectTracks+"\t : number of paired tracks (out of "+numRefTracks+")");
-				out.println(numMissedTracks+"\t : number of missed tracks (out of "+numRefTracks+")");
-				//out.println(numSpuriousTracks+"\t : number of spurious tracks (out of "+numCandidateTracks+")");
-				out.println(numRefDetections+"\t : number of reference detections");
-				out.println(numCandidateDetections+"\t : number of candidate detections");
-				out.println(detectionsSimilarity+"\t : Similarity between detections (True Positive)");
-				//out.println(numRecoveredDetections+"\t : number of paired detections");
-				out.println(numRecoveredDetections+"\t : number of paired detections (out of "+numRefDetections+")");
-				out.println(numMissedDetections+"\t : number of missed detections (out of "+numRefDetections+")");
-				//out.println(numWrongDetections+"\t : number of spurious detections (out of "+numCandidateDetections+")");
+				out.println("Index" + " " + "Ref X" +" " + "Ref Y" +" " + "Ref Z" +" " + "Candidate X" +" " + "Candidate Y" +" " + "Candidate Z");
+				
+				
+				
+				for (Map.Entry<Integer, ArrayList<double[]>> entry: resultPairs.entrySet()) {
+					
+					ArrayList<double[]> pairlist = entry.getValue();
+					for(double[] pair : pairlist) {
+						
+						out.println(entry.getKey() + " " +  pair[0] + " " + pair[1]+  " " + pair[2] + 
+								" " + pair[3] + " " +pair[4] +  " " + " " + pair[5]);
+					}
+					
+					
+				}
 				out.close();
 			} catch (IOException e){
 				e.printStackTrace();
